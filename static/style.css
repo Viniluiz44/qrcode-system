@@ -10,7 +10,7 @@ header {
     color: white;
     padding: 1.5rem;
     text-align: center;
-    position: relative; /* Para posicionar o botão no canto direito */
+    position: relative;
 }
 
 header h1 {
@@ -24,6 +24,7 @@ header h1 {
 
 nav {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
     margin-top: 10px;
@@ -43,7 +44,7 @@ nav a:hover {
 }
 
 .color-mode {
-    position: absolute; /* Posiciona o botão no canto direito */
+    position: absolute;
     top: 20px;
     right: 20px;
 }
@@ -80,7 +81,7 @@ form label {
     font-size: 1.2rem;
 }
 
-form input[type="text"], form textarea {
+form input[type="file"], form input[type="text"], form textarea {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
@@ -118,4 +119,50 @@ button:hover, input[type="submit"]:hover {
 
 .normal * {
     filter: none;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        margin-bottom: 10px;
+    }
+
+    .color-mode {
+        position: static;
+        margin-top: 10px;
+    }
+
+    main {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    nav a {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+
+    .color-mode button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    button, input[type="submit"] {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
 }
