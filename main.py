@@ -138,6 +138,9 @@ def delete_file(filename):
         os.remove(filepath)
     return redirect(url_for('explorador'))
 
+@app.route('/ler_qrcode')
+def ler_qrcode():
+    return render_template('ler_qrcode.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
