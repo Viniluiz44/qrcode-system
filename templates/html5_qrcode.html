@@ -1,30 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ler QR Code</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Leitor de QR Code</h1>
-        <button type="button" id="scan">📷 Ler QR Code</button>
-        <input type="text" id="qr_code" name="qr_code" placeholder="Código do QR Code" readonly>
-        <div id="reader" style="width: 300px; margin: 20px auto; display: none;"></div>
-    </div>
+document.getElementById('scan').addEventListener('click', () => {
+    const qrCodeScanner = new Html5Qrcode("reader");
 
-    <!-- Inclua a biblioteca html5-qrcode -->
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-
-    <!-- Código JavaScript -->
-    <script>
-        document.getElementById('scan').addEventListener('click', () => {
-            const qrCodeScanner = new Html5Qrcode("reader");
-
-            console.log("Inicializando leitor QR Code...");
+    console.log("Inicializando leitor QR Code...");
+    Html5Qrcode.getCameras().then(cameras => {
+        if (cameras.length > 0) {
+            // Procura pela câmera traseira (environment)
+            const rearCamera = cameras.find(camera => camera.label.toLowerCase().includes('back')) || cameras[0];
             qrCodeScanner.start(
-                { facingMode: "environment" }, // Força a câmera frontal
+                { deviceId: { exact: rearCamera.id } }, // Usa a câmera identificada
                 {
                     fps: 10, // Frames por segundo
                     qrbox: 250 // Tamanho do box de leitura
@@ -44,7 +27,12 @@
             });
 
             document.getElementById("reader").style.display = "block";
-        });
-    </script>
-</body>
-</html>
+        } else {
+            console.error("Nenhuma câmera encontrada.");
+            alert("Nenhuma câmera foi encontrada no dispositivo.");
+        }
+    }).catch(err => {
+        console.error("Erro ao obter a lista de câmeras:", err);
+        alert("Erro ao obter a lista de câmeras. Verifique as permissões no navegador.");
+    });
+});
