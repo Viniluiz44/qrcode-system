@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ler QR Code</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
@@ -22,42 +22,30 @@
         document.getElementById('scan').addEventListener('click', () => {
             const qrCodeScanner = new Html5Qrcode("reader");
 
-            console.log("Inicializando leitor QR Code...");
-            
-            Html5Qrcode.getCameras().then(cameras => {
-                if (cameras && cameras.length) {
-                    // Tenta encontrar a câmera traseira com "back" no rótulo
-                    let rearCamera = cameras.find(camera => camera.label.toLowerCase().includes('back')) || cameras[0];
-                    
-                    qrCodeScanner.start(
-                        { deviceId: rearCamera.id }, // Usa a câmera identificada
-                        {
-                            fps: 10,
-                            qrbox: 250
-                        },
-                        (decodedText) => {
-                            console.log("QR Code lido com sucesso:", decodedText);
-                            document.getElementById("qr_code").value = decodedText;
-                            qrCodeScanner.stop();
-                            document.getElementById("reader").style.display = "none";
-                        },
-                        (errorMessage) => {
-                            console.log("Erro durante a leitura:", errorMessage);
-                        }
-                    ).catch((err) => {
-                        console.error("Erro ao acessar a câmera:", err);
-                        alert("Não foi possível acessar a câmera. Verifique as permissões no navegador.");
-                    });
+            // Configuração para solicitar câmera traseira
+            const cameraConfig = { facingMode: "environment" };
 
-                    document.getElementById("reader").style.display = "block";
-                } else {
-                    console.error("Nenhuma câmera encontrada.");
-                    alert("Nenhuma câmera foi encontrada no dispositivo.");
+            qrCodeScanner.start(
+                cameraConfig, // Configuração da câmera traseira
+                {
+                    fps: 10,
+                    qrbox: 250
+                },
+                (decodedText) => {
+                    console.log("QR Code lido com sucesso:", decodedText);
+                    document.getElementById("qr_code").value = decodedText;
+                    qrCodeScanner.stop();
+                    document.getElementById("reader").style.display = "none";
+                },
+                (errorMessage) => {
+                    console.log("Erro durante a leitura:", errorMessage);
                 }
-            }).catch(err => {
-                console.error("Erro ao obter a lista de câmeras:", err);
-                alert("Erro ao obter a lista de câmeras. Verifique as permissões no navegador.");
+            ).catch((err) => {
+                console.error("Erro ao acessar a câmera:", err);
+                alert("Não foi possível acessar a câmera. Verifique as permissões no navegador.");
             });
+
+            document.getElementById("reader").style.display = "block";
         });
     </script>
 </body>
