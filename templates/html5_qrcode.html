@@ -3,14 +3,22 @@ document.getElementById('scan').addEventListener('click', () => {
 
     console.log("Inicializando leitor QR Code...");
     Html5Qrcode.getCameras().then(cameras => {
-        if (cameras.length > 0) {
-            // Procura pela câmera traseira (environment)
-            const rearCamera = cameras.find(camera => camera.label.toLowerCase().includes('back')) || cameras[0];
+        if (cameras && cameras.length) {
+            // Tenta encontrar a câmera traseira com "back" no rótulo
+            let cameraId = cameras.find(camera => camera.label.toLowerCase().includes('back'))?.id;
+            
+            // Se não encontrar, usa a primeira câmera
+            if (!cameraId && cameras[1]) {
+                cameraId = cameras[1].id; // Posição 1 é tipicamente a traseira, 0 é a frontal
+            } else if (!cameraId) {
+                cameraId = cameras[0].id; // Se não encontrar, usa a primeira disponível
+            }
+
             qrCodeScanner.start(
-                { deviceId: { exact: rearCamera.id } }, // Usa a câmera identificada
+                { deviceId: { exact: cameraId } },
                 {
-                    fps: 10, // Frames por segundo
-                    qrbox: 250 // Tamanho do box de leitura
+                    fps: 10,
+                    qrbox: 250
                 },
                 (decodedText) => {
                     console.log("QR Code lido com sucesso:", decodedText);
