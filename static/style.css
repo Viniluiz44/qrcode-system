@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative; /* Para posicionar o botão no canto direito */
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.boas_vindas {
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+nav a {
+    font-size: 1.2rem;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #0056b3;
+    border-radius: 5px;
+}
+
+nav a:hover {
+    background-color: #004494;
+}
+
+.color-mode {
+    position: absolute; /* Posiciona o botão no canto direito */
+    top: 20px;
+    right: 20px;
+}
+
+.color-mode button {
+    background-color: #0056b3;
+    color: white;
+    font-size: 1rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.color-mode button:hover {
+    background-color: #004494;
+}
+
+main {
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+form input[type="text"], form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button, input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para modos de daltonismo */
+.monochromacy * {
+    filter: grayscale(100%);
+}
+
+.dichromacy * {
+    filter: contrast(150%) saturate(200%);
+}
+
+.trichromacy * {
+    filter: hue-rotate(90deg);
+}
+
+.normal * {
+    filter: none;
+}
