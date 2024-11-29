@@ -35,7 +35,7 @@
         document.getElementById('scan').addEventListener('click', () => {
             const qrCodeScanner = new Html5Qrcode("reader");
             qrCodeScanner.start(
-                { facingMode: "user" },
+                { facingMode: "environment" },
                 { fps: 10, qrbox: 250 },
                 (decodedText) => {
                     document.getElementById("qr_code").value = decodedText;
