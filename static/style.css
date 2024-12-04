@@ -1,12 +1,13 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #FFFFFF; /* Fundo branco */
     margin: 0;
     padding: 0;
+    color: #000000; /* Texto preto */
 }
 
 header {
-    background-color: #007bff;
+    background-color: #0055A4; /* Azul primário */
     color: white;
     padding: 1.5rem;
     text-align: center;
@@ -35,12 +36,12 @@ nav a {
     color: white;
     text-decoration: none;
     padding: 10px 20px;
-    background-color: #0056b3;
+    background-color: #82752d; /* Amarelo secundário */
     border-radius: 5px;
 }
 
 nav a:hover {
-    background-color: #004494;
+    background-color: #228B22; /* Verde acento */
 }
 
 .color-mode {
@@ -50,8 +51,8 @@ nav a:hover {
 }
 
 .color-mode button {
-    background-color: #0056b3;
-    color: white;
+    background-color: #82752d; /* Amarelo secundário */
+    color: black; /* Texto preto */
     font-size: 1rem;
     padding: 10px;
     border: none;
@@ -60,7 +61,8 @@ nav a:hover {
 }
 
 .color-mode button:hover {
-    background-color: #004494;
+    background-color: #228B22; /* Verde acento */
+    color: white; /* Texto branco */
 }
 
 main {
@@ -91,7 +93,7 @@ form input[type="file"], form input[type="text"], form textarea {
 }
 
 button, input[type="submit"] {
-    background-color: #007bff;
+    background-color: #0055A4; /* Azul primário */
     color: white;
     font-size: 1.2rem;
     padding: 0.75rem 1.5rem;
@@ -101,7 +103,7 @@ button, input[type="submit"] {
 }
 
 button:hover, input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #82752d; /* Amarelo secundário */
 }
 
 /* Estilos para modos de daltonismo */
