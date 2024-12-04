@@ -14,6 +14,7 @@
             <a href="{{ url_for('index') }}">Início</a>
             <a href="{{ url_for('registrar_manutencao') }}">Registrar Manutenção</a>
             <a href="{{ url_for('consultar_historico') }}">Consultar Histórico</a>
+            <a href="{{ url_for('explorador') }}">Explorador de Arquivos</a> <!-- Novo botão -->
         </nav>
     </header>
     <main>
@@ -24,14 +25,14 @@
             <label for="qr_code">QR Code:</label>
             <input type="text" id="qr_code" name="qr_code" required>
             <button type="button" id="scan">📷 Ler QR Code</button>
-            <button type="button" onclick="gerarQRCode()">Gerar QR Code</button>
+            <button type="button" onclick="gerarPDF()">Gerar PDF</button>
             <div id="qrcode-display"></div>
             <div id="reader" style="width: 300px; margin: 20px auto; display: none;"></div>
             <input type="submit" value="Cadastrar">
         </form>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
-<script>
+    <script>
     document.getElementById('scan').addEventListener('click', () => {
         const qrCodeScanner = new Html5Qrcode("reader");
         qrCodeScanner.start(
@@ -49,16 +50,42 @@
         document.getElementById("reader").style.display = "block";
     });
 
-        function gerarQRCode() {
-            const qrCodeInput = document.getElementById("qr_code").value;
-            const qrCodeContainer = document.getElementById("qrcode-display");
-            if (!qrCodeInput) {
-                alert("Por favor, preencha o campo QR Code antes de gerar.");
-                return;
-            }
-            qrCodeContainer.innerHTML = "";
-            new QRCode(qrCodeContainer, { text: qrCodeInput, width: 128, height: 128 });
+    function gerarQRCode() {
+        const qrCodeInput = document.getElementById("qr_code").value;
+        const qrCodeContainer = document.getElementById("qrcode-display");
+        if (!qrCodeInput) {
+            alert("Por favor, preencha o campo QR Code antes de gerar.");
+            return;
         }
+        qrCodeContainer.innerHTML = "";
+        new QRCode(qrCodeContainer, { text: qrCodeInput, width: 128, height: 128 });
+    }
+
+    function gerarPDF() {
+        const qrCodeInput = document.getElementById("qr_code").value;
+        if (!qrCodeInput) {
+            alert("Por favor, preencha o campo QR Code antes de gerar o PDF.");
+            return;
+        }
+        fetch('/gerar_qrcode_pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ qr_code: qrCodeInput }),
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'qrcode.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .catch(error => console.error('Erro ao gerar PDF:', error));
+    }
     </script>
     <script src="/static/color_mode.js"></script>
 </body>

@@ -1,7 +1,11 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, send_file
 from openpyxl import Workbook, load_workbook
 from datetime import date
+from fpdf import FPDF
+import qrcode
+import io
+
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
@@ -141,6 +145,46 @@ def delete_file(filename):
 @app.route('/ler_qrcode')
 def ler_qrcode():
     return render_template('ler_qrcode.html')
+
+@app.route('/gerar_qrcode_pdf', methods=['POST'])
+def gerar_qrcode_pdf():
+    data = request.get_json()
+    qr_code_text = data.get('qr_code')
+    
+    if not qr_code_text:
+        return "QR Code é necessário", 400
+
+    # Gerar QR Code
+    qr = qrcode.QRCode(version=1, box_size=10, border=5)
+    qr.add_data(qr_code_text)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white')
+
+    # Salvar a imagem em um arquivo temporário
+    temp_file = 'temp_qrcode.png'
+    img.save(temp_file)
+
+    # Criar PDF
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 16)
+    pdf.cell(40, 10, 'QR Code:', ln=True)
+    pdf.image(temp_file, x=10, y=20, w=100)
+
+    # Salvar PDF em um arquivo temporário
+    temp_pdf = 'temp_qrcode.pdf'
+    pdf.output(temp_pdf)
+
+    # Ler o PDF e enviar como resposta
+    with open(temp_pdf, 'rb') as f:
+        buffer_pdf = f.read()
+
+    # Remover os arquivos temporários
+    os.remove(temp_file)
+    os.remove(temp_pdf)
+
+    return send_file(io.BytesIO(buffer_pdf), as_attachment=True, download_name='qrcode.pdf', mimetype='application/pdf')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
